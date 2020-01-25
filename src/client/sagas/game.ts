@@ -48,10 +48,34 @@ function* pause() {
   }
 }
 
-function* showTurnInfo(text: string) {
+function* show(text: string) {
   yield put(uiActions.openTurnInfo({ message: text }));
   yield delay(2000);
   yield put(uiActions.closeTurnInfo({ message: text }));
+}
+
+function* showPlayerTurn() {
+  const { field }: { field: Field } = yield select((state: AppState) => state.game);
+
+  if (field.player.controller.command.def) {
+    yield call(show, `ピカチューは ガードしている`);
+  }
+
+  const damage = field.dump.enemy.hp - field.enemy.hp.current;
+
+  if (damage) {
+    yield call(show, `${damage} ダメージ 与えた`);
+  }
+}
+
+function* showEnemyTurn() {
+  const { field }: { field: Field } = yield select((state: AppState) => state.game);
+
+  if (field.enemy.controller.command.def) {
+    yield call(show, `敵は ガードしている`);
+  }
+
+  yield call(show, `${field.dump.player.hp - field.player.hp.current} ダメージ 受けた`);
 }
 
 function* tick() {
@@ -78,30 +102,23 @@ function* tick() {
     // player turn
     script(field.player.controller);
 
-    const fromEHP = field.enemy.hp.current;
-
     yield put(gameActions.setPhase({ phase: "PLAYER_TURN" }));
-    yield call(showTurnInfo, "PLAYER TURN");
-    field.playerAttackPhease();
+    yield call(show, "PLAYER TURN");
 
-    const toEHP = field.enemy.hp.current;
+    field.playerPhease();
 
-    yield call(showTurnInfo, `${fromEHP - toEHP} ダメージ 与えた`);
+    yield call(showPlayerTurn);
 
     yield delay(1000);
 
     // enemmy turn
     field.enemy.controller.attack();
 
-    const fromPHP = field.player.hp.current;
-
     yield put(gameActions.setPhase({ phase: "ENEMY_TURN" }));
-    yield call(showTurnInfo, "ENEMY TURN");
-    field.enemyAttackPhease();
+    yield call(show, "ENEMY TURN");
+    field.enemyPhease();
 
-    const toPHP = field.player.hp.current;
-
-    yield call(showTurnInfo, `${fromPHP - toPHP} ダメージ 受けた`);
+    yield call(showEnemyTurn);
 
     yield put(gameActions.setField({ field }));
     yield put(gameActions.setPhase({ phase: "THINK" }));

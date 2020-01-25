@@ -9,8 +9,8 @@ export class Position {
     this.y = y;
   }
 
-  public add(command: BotCommand) {
-    this.x = this.x + command.x;
-    this.y = this.y + command.y;
-  }
+  // public add(command: BotCommand) {
+  //   this.x = this.x + command.x;
+  //   this.y = this.y + command.y;
+  // }
 }

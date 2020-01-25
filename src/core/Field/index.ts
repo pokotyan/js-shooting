@@ -1,4 +1,3 @@
-import { Shot } from "../Shot";
 import { Bot } from "../Bot";
 import { BotCommand } from "../Command";
 import { Controller } from "../Controller";
@@ -6,60 +5,57 @@ import { Controller } from "../Controller";
 export class Field {
   public player: Bot;
   public enemy: Bot;
-  public shots: Shot[];
+  public dump: {
+    player: any;
+    enemy: any;
+  }
 
   constructor({ player, enemy }: { player: Bot; enemy: Bot }) {
     this.player = player;
     this.enemy = enemy;
-    this.shots = [];
+    this.dump = {
+      player,
+      enemy
+    }
   }
 
-  // public playerMovePhease() {
-  //   this.player.move();
-  // }
+  public prePhease() {
+    this.dump = {
+      player: {
+        hp: this.player.hp.current
+      },
+      enemy: {
+        hp: this.enemy.hp.current
+      },
+    }
+  }
 
-  public playerAttackPhease() {
+  public playerPhease() {
+    this.prePhease();
     this.player.attack(this.enemy);
   }
 
-  // public enemyMovePhease() {
-  //   this.enemy.move();
-  // }
-
-  public enemyAttackPhease() {
+  public enemyPhease() {
+    this.prePhease();
     this.enemy.attack(this.player);
   }
-
-  // public addShots(shot: Shot) {
-  //   this.shots.push(shot);
-  // }
-
-  // public shotsMovePhease() {
-  //   this.shots.forEach(s => {
-  //     s.move();
-  //   });
-  // }
 }
 
 export const genField = () => {
-  const controller = new Controller({ command: new BotCommand() });
-
-  return new Field({
+  const field = new Field({
     player: new Bot({
-      controller,
-      // x: 23,
-      // y: 178,
-      // color: "blue",
+      controller: new Controller({ command: new BotCommand() }),
       hp: 100,
-      mp: 80
+      mp: 80,
+      ap: 1
     }),
     enemy: new Bot({
-      controller,
-      // x: 500,
-      // y: 170,
-      // color: "red",
+      controller: new Controller({ command: new BotCommand() }),
       hp: 300,
-      mp: 200
+      mp: 200,
+      ap: 1
     })
   });
+
+  return field;
 };

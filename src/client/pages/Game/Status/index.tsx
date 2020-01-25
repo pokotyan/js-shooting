@@ -70,6 +70,18 @@ export default () => {
             type="MP"
           />
         </div>
+        <div
+          style={{
+            display: "flex"
+          }}
+        >
+          <div className={style.statusTitle}>AP　</div>
+          <ProgressBar
+            max={field.player.ap.max}
+            current={field.player.ap.current}
+            type="AP"
+          />
+        </div>
       </div>
     </div>
   );

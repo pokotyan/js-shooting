@@ -2,12 +2,13 @@ import { reducerWithInitialState } from "typescript-fsa-reducers";
 import produce from "immer";
 import * as gameActions from "../actions/game";
 import { Controller } from "../../core/Controller";
-import { genField } from "../../core/Field";
+import { genField, Field } from "../../core/Field";
 
 export type PHASE = "INITIAL" | "THINK" | "PLAYER_TURN" | "ENEMY_TURN";
 
 export interface InitialState {
   code: string;
+  field: Field
   phase: PHASE;
   controller: Controller;
   isPause: boolean;
@@ -16,6 +17,7 @@ export interface InitialState {
 
 export const initialState = {
   code: `const script = controller => {
+  controller.guard();
   controller.attack();
 };
 return script;`,

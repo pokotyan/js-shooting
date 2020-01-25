@@ -1,13 +1,7 @@
-// import { BotCommand } from "../Command";
-import { Position } from "../Position";
 import { Controller } from "../Controller";
-import { Field } from "../Field";
-import { Shot } from "../Shot";
 
 export class Bot {
   public controller: Controller;
-  // public position: Position;
-  // public color: string;
   public hp: {
     max: number;
     current: number;
@@ -16,25 +10,23 @@ export class Bot {
     max: number;
     current: number;
   };
+  public ap: {
+    max: number;
+    current: number;
+  };
 
   constructor({
     controller,
-    // x,
-    // y,
-    // color,
     hp,
-    mp
+    mp,
+    ap
   }: {
     controller: Controller;
-    // x: number;
-    // y: number;
-    // color: string;
     hp: number;
     mp: number;
+    ap: number;
   }) {
     this.controller = controller;
-    // this.position = new Position(x, y);
-    // this.color = color;
     this.hp = {
       max: hp,
       current: hp
@@ -43,21 +35,32 @@ export class Bot {
       max: mp,
       current: mp
     };
+    this.ap = {
+      max: 5,
+      current: ap
+    };
   }
 
-  // public move() {
-  //   this.position.add(this.controller.command);
-  //   this.controller.command.reset(); // 移動が終わったら、移動した分のコマンドはリセットする
-  // }
+  // @todo ダメージ計算用のクラス作る
+  private calcDamage(bot: Bot) {
+    const damage = Math.max(
+      this.controller.command.atk - bot.controller.command.def,
+      0
+    );
 
-  public doDamage(bot: Bot, power: number) {
-    bot.hp.current = bot.hp.current - power;
+    bot.controller.command.def = 0;
+
+    return damage;
+  }
+
+  public doDamage(bot: Bot) {
+    const damage = this.calcDamage(bot);
+
+    bot.hp.current = bot.hp.current - damage;
   }
 
   public attack(bot: Bot) {
-    const power = this.controller.command.attackPower;
-
-    this.doDamage(bot, power);
+    this.doDamage(bot);
 
     this.controller.command.reset();
   }

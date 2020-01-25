@@ -11,11 +11,11 @@ export class Controller {
     console.log(message);
   }
 
-  public advance() {
-    this.command.advance();
-  }
-
   public attack() {
     this.command.attack();
+  }
+
+  public guard() {
+    this.command.guard();
   }
 }

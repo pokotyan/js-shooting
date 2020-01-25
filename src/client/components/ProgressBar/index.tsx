@@ -36,10 +36,15 @@ export default ({
 }: {
   max: number;
   current: number;
-  type: "HP" | "MP";
+  type: "HP" | "MP" | "AP";
 }) => {
   const width = (current / max) * 100;
-  const colorStyle = type === "HP" ? style.hpColor : style.mpColor;
+  const colorStyle =
+    type === "HP"
+      ? style.hpColor
+      : type === "MP"
+      ? style.mpColor
+      : style.apColor;
   const { width: animatedWidth } = useSpring({ from: { width: 100 }, width });
 
   return (
