@@ -1,0 +1,79 @@
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.link {
+  cursor: pointer;
+}
+
+.turnInfo {
+  z-index: 100;
+  position: absolute;
+  width: 100%;
+  height: 15vh;
+  text-align: center;
+  font-weight: 800;
+  font-size: 5em;
+  will-change: opacity;
+  color: rgb(183, 183, 183);
+  line-height: 1.35;
+}
+
+.statusTitle {
+  font-weight: 800;
+  color: rgb(183, 183, 183);
+  width: 50px;
+}
+
+.blue {
+  background: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);
+}
+
+.red {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.gray {
+  background: linear-gradient(135deg, #c3cfe2 0%, #c3cfe2 100%);
+}
+
+.yellow {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+}
+
+.RareWind {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.SaintPetersburg {
+  background: linear-gradient(135deg, #c3cfe2 0%, #c3cfe2 100%);
+}
+
+.DeepBlue {
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+}
+
+.RipeMalinka {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.NearMoon {
+  background: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);
+}
+
+.WildApple {
+  background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+}
+
+.LadogaBottom {
+  background: linear-gradient(135deg, #ebc0fd 0%, #d9ded8 100%);
+}
+
+.SunnyMorning {
+  background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+}
+
+.LemonGate {
+  background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);
+}

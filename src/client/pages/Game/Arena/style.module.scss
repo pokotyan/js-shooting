@@ -1,0 +1,30 @@
+.container {
+  height: 100%;
+  width: 100%;
+}
+
+.canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.bg {
+  position: absolute;
+  height: 50vh;
+  width: 100%;
+}
+
+.player {
+  width: 200px;
+  bottom: 0;
+  position: absolute;
+}
+
+.enemy {
+  width: 150px;
+  top: 15px;
+  right: 15px;
+  position: absolute;
+}

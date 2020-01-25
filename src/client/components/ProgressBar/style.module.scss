@@ -1,0 +1,29 @@
+.BarContainer {
+  width: 200px;
+  position: relative;
+  height: 24px;
+  background: lightgray;
+}
+
+.BarInner {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: 0;
+}
+
+.BarInnerText {
+  text-align: center;
+  line-height: 1.5;
+  color: rgb(183, 183, 183);
+  font-weight: 800;
+}
+
+.hpColor {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+}
+
+.mpColor {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
