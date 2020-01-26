@@ -19,13 +19,9 @@ $small: 740px;
   font-size: 5em;
   will-change: opacity;
   color: white;
-  line-height: 1.35;
-}
-
-@media (max-width: $small) {
-  .turnInfo {
-    line-height: 1.55;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .statusTitle {
