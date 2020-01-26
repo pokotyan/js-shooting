@@ -3,13 +3,15 @@ import { BotCommand } from "../Command";
 export class Controller {
   public command: BotCommand;
   public commands: {
-    atk: number[]
+    atk: number[],
+    def: number[]
   };
 
   constructor({ command }: { command: BotCommand }) {
     this.command = command;
     this.commands = {
-      atk: []
+      atk: [],
+      def: []
     };
   }
 
@@ -17,7 +19,7 @@ export class Controller {
     console.log(message);
   }
 
-  public reset() {
+  public resetATK() {
     this.commands.atk = []    
   }
 
@@ -26,6 +28,6 @@ export class Controller {
   }
 
   public guard() {
-    this.command.guard();
+    this.commands.def.push(this.command.guard());
   }
 }

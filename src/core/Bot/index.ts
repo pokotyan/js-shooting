@@ -16,17 +16,20 @@ export class Bot {
     max: number;
     current: number;
   };
+  public def: number;
 
   constructor({
     controller,
     hp,
     mp,
-    ap
+    ap,
+    def
   }: {
     controller: Controller;
     hp: number;
     mp: number;
     ap: number;
+    def: number;
   }) {
     this.controller = controller;
     this.hp = {
@@ -41,16 +44,17 @@ export class Bot {
       max: MAX_AP,
       current: ap
     };
+    this.def = def;
   }
 
   // @todo ダメージ計算用のクラス作る
   private calcDamage(bot: Bot, power: number) {
     const damage = Math.max(
-      power - bot.controller.command.def,
+      power - bot.def,
       0
     );
 
-    bot.controller.command.def = 0;
+    bot.def = 0;
 
     return damage;
   }
@@ -61,6 +65,10 @@ export class Bot {
 
   public subtractAP() {
     this.ap.current = Math.max(this.ap.current - 1, 0);
+  }
+
+  public defenceUP(power: number) {
+    this.def += power;
   }
 
   public doDamage(bot: Bot, power: number) {
@@ -78,6 +86,16 @@ export class Bot {
       this.subtractAP();
     })
 
-    this.controller.command.reset();
+    this.controller.resetATK();
+  }
+
+  public guard() {
+    this.controller.commands.def.forEach(power => {
+      if (this.ap.current) {
+        this.defenceUP(power);
+      }
+
+      this.subtractAP();
+    })
   }
 }

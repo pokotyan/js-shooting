@@ -57,7 +57,7 @@ function* show(text: string) {
 function* showPlayerTurn() {
   const { field }: { field: Field } = yield select((state: AppState) => state.game);
 
-  if (field.player.controller.command.def) {
+  if (field.player.def) {
     yield call(show, `ピカチューは ガードしている`);
   }
 
@@ -71,7 +71,7 @@ function* showPlayerTurn() {
 function* showEnemyTurn() {
   const { field }: { field: Field } = yield select((state: AppState) => state.game);
 
-  if (field.enemy.controller.command.def) {
+  if (field.enemy.def) {
     yield call(show, `敵は ガードしている`);
   }
 
@@ -85,13 +85,13 @@ function* checkFinish(field: Field) {
   } = field.checkFinish();
 
   if (win) {
-    yield call(show, "WIN");
     yield put(gameActions.setPhase({ phase: "WIN" }));
+    yield call(show, "WIN");
     return true;
   }
   if (lose) {
-    yield call(show, "LOSE");
     yield put(gameActions.setPhase({ phase: "LOSE" }));
+    yield call(show, "LOSE");
     return true;
   } 
 
@@ -120,7 +120,15 @@ function* tick() {
     } = yield select((state: AppState) => state.game);
 
     // player turn
-    script(field.player.controller);
+    try {
+      script(field.player.controller);
+    } catch(err) {
+      yield call(show, "SCRIPT ERROR");
+
+      // @todo 通知コンポーネント作ってそれでエラー表示する
+      window.confirm(`コードに問題があります。API仕様を確認してください。err: ${err}`)
+      continue;
+    }
 
     yield put(gameActions.setPhase({ phase: "PLAYER_TURN" }));
     yield call(show, "PLAYER TURN");

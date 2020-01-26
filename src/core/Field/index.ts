@@ -33,11 +33,13 @@ export class Field {
   public playerPhease() {
     this.prePhease();
     this.player.attack(this.enemy);
+    this.player.guard();
   }
 
   public enemyPhease() {
     this.prePhease();
     this.enemy.attack(this.player);
+    this.enemy.guard();
   }
 
   public endPhease() {
@@ -73,13 +75,15 @@ export const genField = () => {
       controller: new Controller({ command: new BotCommand() }),
       hp: 100,
       mp: 80,
-      ap: 1
+      ap: 1,
+      def: 0
     }),
     enemy: new Bot({
       controller: new Controller({ command: new BotCommand() }),
       hp: 300,
       mp: 200,
-      ap: 1
+      ap: 1,
+      def: 0
     })
   });
 
