@@ -1,5 +1,7 @@
 import { Controller } from "../Controller";
 
+const MAX_AP = 5;
+
 export class Bot {
   public controller: Controller;
   public hp: {
@@ -36,15 +38,15 @@ export class Bot {
       current: mp
     };
     this.ap = {
-      max: 5,
+      max: MAX_AP,
       current: ap
     };
   }
 
   // @todo ダメージ計算用のクラス作る
-  private calcDamage(bot: Bot) {
+  private calcDamage(bot: Bot, power: number) {
     const damage = Math.max(
-      this.controller.command.atk - bot.controller.command.def,
+      power - bot.controller.command.def,
       0
     );
 
@@ -53,14 +55,28 @@ export class Bot {
     return damage;
   }
 
-  public doDamage(bot: Bot) {
-    const damage = this.calcDamage(bot);
+  public addAP() {
+    this.ap.current = Math.min(this.ap.current + 1, MAX_AP);
+  }
+
+  public subtractAP() {
+    this.ap.current = Math.max(this.ap.current - 1, 0);
+  }
+
+  public doDamage(bot: Bot, power: number) {
+    const damage = this.calcDamage(bot, power);
 
     bot.hp.current = Math.max(bot.hp.current - damage, 0);
   }
 
   public attack(bot: Bot) {
-    this.doDamage(bot);
+    this.controller.commands.atk.forEach(power => {
+      if (this.ap.current) {
+        this.doDamage(bot, power);
+      }
+
+      this.subtractAP();
+    })
 
     this.controller.command.reset();
   }

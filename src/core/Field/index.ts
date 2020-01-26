@@ -40,6 +40,11 @@ export class Field {
     this.enemy.attack(this.player);
   }
 
+  public endPhease() {
+    this.player.addAP();
+    this.enemy.addAP();
+  }
+
   public checkFinish() {
     if (!this.player.hp.current) {
       return {

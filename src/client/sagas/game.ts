@@ -147,7 +147,9 @@ function* tick() {
     if (yield call(checkFinish, field)) {
       return;
     }
-    
+
+    field.endPhease();
+
     yield put(gameActions.setField({ field }));
     yield put(gameActions.setPhase({ phase: "THINK" }));
   }

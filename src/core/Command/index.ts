@@ -7,7 +7,7 @@ export class BotCommand {
   }
 
   public attack() {
-    this.atk = this.atk += 50;
+    return 50;
   }
 
   public guard() {
