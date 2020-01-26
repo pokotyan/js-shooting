@@ -4,11 +4,17 @@ https://naughty-davinci-839d5c.netlify.com/
 
 javascript でコードを書いて、RPG のような戦闘ができるゲームです。
 
-画面左側のエディタで書いたコードで行動が決まります。
-
 <img width="874" alt="app" src="https://user-images.githubusercontent.com/20484619/73130623-384e6300-403f-11ea-9320-1512d685e79c.png">
 
-以下のように controller を引数にとる関数を return してください。
+START を押すと戦闘準備のフェーズにうつります。
+コードを書いて、「戦闘開始」を押すとバトルが始まります。
+
+<img width="573" alt="スクリーンショット 2020-01-26 13 37 00" src="https://user-images.githubusercontent.com/20484619/73130714-00e0b600-4041-11ea-8fbb-907b3c575840.png">
+
+ターンはプレイヤー => エネミー => プレイヤー ...と繰り返していきます。
+プレイヤーの行動は画面左側のエディタで書いたコードで決まります。
+
+コードは以下のように controller を引数にとる関数を return してください。
 
 ```js
 const script = controller => {
@@ -18,9 +24,9 @@ const script = controller => {
 return script;
 ```
 
-## Controller
+## API 仕様
 
-### Method
+### Controller
 
 #### attack()
 
