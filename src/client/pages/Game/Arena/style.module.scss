@@ -1,3 +1,5 @@
+$small: 740px;
+
 .container {
   height: 100%;
   width: 100%;
@@ -14,6 +16,12 @@
   position: absolute;
   height: 50vh;
   width: 100%;
+}
+
+@media (max-width: $small) {
+  .bg {
+    height: 40vh;
+  }
 }
 
 .player {

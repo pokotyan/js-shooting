@@ -93,8 +93,9 @@ export default () => {
           <div
             style={{
               bottom: "10px",
-              position: "absolute",
-              right: "10px"
+              position: "fixed",
+              right: "10px",
+              zIndex: 100
             }}
           >
             <GithubIcon />
