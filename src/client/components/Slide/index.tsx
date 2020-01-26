@@ -14,6 +14,10 @@ const getIndex = (phase: PHASE) => {
     index = 0;
   } else if (phase === "PLAYER_TURN" || phase === "ENEMY_TURN") {
     index = 1;
+  } else if (phase === "WIN") {
+    index = 2;
+  } else if (phase === "LOSE") {
+    index = 3;
   }
 
   return index;

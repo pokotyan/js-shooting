@@ -39,6 +39,27 @@ export class Field {
     this.prePhease();
     this.enemy.attack(this.player);
   }
+
+  public checkFinish() {
+    if (!this.player.hp.current) {
+      return {
+        win: false,
+        lose: true
+      }
+    }
+
+    if (!this.enemy.hp.current) {
+      return {
+        win: true,
+        lose: false
+      }
+    }
+
+    return {
+      win: false,
+      lose: false
+    }
+  }
 }
 
 export const genField = () => {

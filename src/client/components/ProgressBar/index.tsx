@@ -45,7 +45,7 @@ export default ({
       : type === "MP"
       ? style.mpColor
       : style.apColor;
-  const { width: animatedWidth } = useSpring({ from: { width: 100 }, width });
+  const { width: animatedWidth } = useSpring({ from: { width }, width });
 
   return (
     <Bar

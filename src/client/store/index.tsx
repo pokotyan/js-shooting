@@ -9,7 +9,7 @@ export const history = createBrowserHistory();
 
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware();
-  const middlewares = [sagaMiddleware];
+  const middlewares = [sagaMiddleware, logger];
 
   const store = createStore(
     createRootReducer(history),

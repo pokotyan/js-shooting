@@ -4,7 +4,7 @@ import * as gameActions from "../actions/game";
 import { Controller } from "../../core/Controller";
 import { genField, Field } from "../../core/Field";
 
-export type PHASE = "INITIAL" | "THINK" | "PLAYER_TURN" | "ENEMY_TURN";
+export type PHASE = "INITIAL" | "THINK" | "PLAYER_TURN" | "ENEMY_TURN" | "WIN" | "LOSE";
 
 export interface InitialState {
   code: string;

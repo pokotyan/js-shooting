@@ -56,7 +56,7 @@ export class Bot {
   public doDamage(bot: Bot) {
     const damage = this.calcDamage(bot);
 
-    bot.hp.current = bot.hp.current - damage;
+    bot.hp.current = Math.max(bot.hp.current - damage, 0);
   }
 
   public attack(bot: Bot) {

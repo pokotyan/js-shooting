@@ -38,6 +38,8 @@ export default () => {
               戦闘開始
             </div>
             <div className={`${style.turnInfo} ${style.red}`}>戦闘中</div>
+            <div className={`${style.turnInfo} ${style.yellow}`}>WIN</div>
+            <div className={`${style.turnInfo} ${style.WildApple}`}>LOSE</div>
           </Slide>
         )}
       </div>

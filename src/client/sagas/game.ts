@@ -78,6 +78,26 @@ function* showEnemyTurn() {
   yield call(show, `${field.dump.player.hp - field.player.hp.current} ダメージ 受けた`);
 }
 
+function* checkFinish(field: Field) {
+  const {
+    win,
+    lose
+  } = field.checkFinish();
+
+  if (win) {
+    yield call(show, "WIN");
+    yield put(gameActions.setPhase({ phase: "WIN" }));
+    return true;
+  }
+  if (lose) {
+    yield call(show, "LOSE");
+    yield put(gameActions.setPhase({ phase: "LOSE" }));
+    return true;
+  } 
+
+  return false;
+}
+
 function* tick() {
   while (true) {
     yield take(gameActions.TICK);
@@ -109,6 +129,10 @@ function* tick() {
 
     yield call(showPlayerTurn);
 
+    if (yield call(checkFinish, field)) {
+      return;
+    }
+
     yield delay(1000);
 
     // enemmy turn
@@ -120,6 +144,10 @@ function* tick() {
 
     yield call(showEnemyTurn);
 
+    if (yield call(checkFinish, field)) {
+      return;
+    }
+    
     yield put(gameActions.setField({ field }));
     yield put(gameActions.setPhase({ phase: "THINK" }));
   }
