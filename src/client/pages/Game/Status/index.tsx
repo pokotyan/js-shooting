@@ -4,6 +4,7 @@ import * as gameActions from "../../../actions/game";
 import { AppState } from "../../../reducers";
 import Slide from "../../../components/Slide";
 import ProgressBar from "../../../components/ProgressBar";
+import GithubIcon from "./GithubIcon";
 import style from "./style.module.scss";
 
 export default () => {
@@ -84,6 +85,21 @@ export default () => {
             type="AP"
           />
         </div>
+        <a
+          href="https://github.com/pokotyan/js-game"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <div
+            style={{
+              bottom: "10px",
+              position: "absolute",
+              right: "10px"
+            }}
+          >
+            <GithubIcon />
+          </div>
+        </a>
       </div>
     </div>
   );

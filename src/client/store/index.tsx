@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from "redux";
-import logger from "redux-logger";
+// import logger from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 import { createBrowserHistory } from "history";
 import { createRootReducer } from "../reducers";
@@ -9,7 +9,7 @@ export const history = createBrowserHistory();
 
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware();
-  const middlewares = [sagaMiddleware, logger];
+  const middlewares = [sagaMiddleware];
 
   const store = createStore(
     createRootReducer(history),
