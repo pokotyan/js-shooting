@@ -6,6 +6,8 @@ javascript でコードを書いて、RPG のような戦闘ができるゲー�
 
 画面左側のエディタで書いたコードで行動が決まります。
 
+<img width="874" alt="app" src="https://user-images.githubusercontent.com/20484619/73130623-384e6300-403f-11ea-9320-1512d685e79c.png">
+
 以下のように controller を引数にとる関数を return してください。
 
 ```js
