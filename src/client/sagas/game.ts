@@ -93,12 +93,10 @@ function* checkFinish(field: Field) {
 
   if (win) {
     yield put(gameActions.setPhase({ phase: "WIN" }));
-    yield call(show, "WIN");
     return true;
   }
   if (lose) {
     yield put(gameActions.setPhase({ phase: "LOSE" }));
-    yield call(show, "LOSE");
     return true;
   }
 
@@ -140,7 +138,7 @@ function* tick() {
     }
 
     yield put(gameActions.setPhase({ phase: "PLAYER_TURN" }));
-    yield call(show, "PLAYER TURN");
+    yield delay(1000);
 
     field.playerPhease();
 
@@ -156,7 +154,8 @@ function* tick() {
     field.enemy.controller.attack();
 
     yield put(gameActions.setPhase({ phase: "ENEMY_TURN" }));
-    yield call(show, "ENEMY TURN");
+    yield delay(1000);
+
     field.enemyPhease();
 
     yield call(showAction, { dump: field.snapShot.enemy, isPlayerTurn: false });
