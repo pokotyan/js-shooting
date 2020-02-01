@@ -51,18 +51,29 @@ function* pause() {
 
 function* show(text: string) {
   yield put(uiActions.openTurnInfo({ message: text }));
-  yield delay(2000);
+  yield delay(1000);
   yield put(uiActions.closeTurnInfo({ message: text }));
 }
 
-function* showAction(dump: Dump) {
+function* showAction({
+  dump,
+  isPlayerTurn
+}: {
+  dump: Dump;
+  isPlayerTurn: boolean;
+}) {
   if (!dump.action.length) {
     yield call(show, `${dump.name}は 様子を見ている`);
   }
 
   for (const action of dump.action) {
     if (action.constructor.name === "Atk") {
-      yield call(show, `${action.val} ダメージ 与えた`);
+      yield put(uiActions.showDamageEffect({ isPlayerTurn }));
+      yield call(
+        show,
+        `${action.val} ダメージ ${isPlayerTurn ? "与えた" : "受けた"}`
+      );
+      yield put(uiActions.hideDamageEffect());
     }
 
     if (action.constructor.name === "Def") {
@@ -123,7 +134,7 @@ function* tick() {
 
       // @todo 通知コンポーネント作ってそれでエラー表示する
       window.confirm(
-        `コードに問題があります。API仕様を確認してください。err: ${err}`
+        `コードに問題があります。githubのreadmeを確認してください。err: ${err}`
       );
       continue;
     }
@@ -133,7 +144,7 @@ function* tick() {
 
     field.playerPhease();
 
-    yield call(showAction, field.snapShot.player);
+    yield call(showAction, { dump: field.snapShot.player, isPlayerTurn: true });
 
     if (yield call(checkFinish, field)) {
       return;
@@ -148,7 +159,7 @@ function* tick() {
     yield call(show, "ENEMY TURN");
     field.enemyPhease();
 
-    yield call(showAction, field.snapShot.enemy);
+    yield call(showAction, { dump: field.snapShot.enemy, isPlayerTurn: false });
 
     if (yield call(checkFinish, field)) {
       return;
