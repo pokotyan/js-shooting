@@ -7,10 +7,13 @@ import style from "./style.module.scss";
 
 const Arena: React.FC = () => {
   const {
-    effect: {
-      damage: { player, enemy }
-    }
-  } = useSelector((state: AppState) => state.ui);
+    ui: {
+      effect: {
+        damage: { player, enemy }
+      }
+    },
+    game: { phase }
+  } = useSelector((state: AppState) => state);
   // const [frame, setFrame] = useState(0);
   // const { isPause } = useSelector((state: AppState) => state.game);
 
@@ -21,17 +24,22 @@ const Arena: React.FC = () => {
   // if (isPause) {
   //   cancelAnimationFrame(requestId);
   // }
+  const destroyEffect = `${style.fadeOut} ${style.shake}`;
 
   return (
     <div className={style.container}>
       <div className={`${style.bg}`}>
         <img
-          className={`${style.player} ${player ? style.shake : ""}`}
+          className={`${style.player} ${player ? style.shake : ""} ${
+            phase === "LOSE" ? destroyEffect : ""
+          }`}
           src={pikachu}
           alt="player"
         />
         <img
-          className={`${style.enemy} ${enemy ? style.shake : ""}`}
+          className={`${style.enemy} ${enemy ? style.shake : ""} ${
+            phase === "WIN" ? destroyEffect : ""
+          }`}
           src={snoopy}
           alt="enemy"
         />

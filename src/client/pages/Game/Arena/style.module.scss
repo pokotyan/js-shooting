@@ -28,6 +28,8 @@ $small: 740px;
   width: 200px;
   bottom: 0;
   position: absolute;
+  transition: all 1s;
+  opacity: 1;
 }
 
 .enemy {
@@ -35,6 +37,8 @@ $small: 740px;
   top: 15px;
   right: 15px;
   position: absolute;
+  transition: all 1s;
+  opacity: 1;
 }
 
 .shake {
@@ -57,4 +61,8 @@ $small: 740px;
   100% {
     transform: translate(0px, 0px) rotateZ(0deg);
   }
+}
+
+.fadeOut {
+  opacity: 0;
 }
