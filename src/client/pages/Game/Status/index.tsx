@@ -18,7 +18,7 @@ export default () => {
           height: "30%"
         }}
       >
-        {phase === "INITIAL" ? (
+        <Slide phase={phase}>
           <div
             className={`${style.turnInfo} ${style.DeepBlue} ${style.link}`}
             onClick={() => {
@@ -27,23 +27,20 @@ export default () => {
           >
             START
           </div>
-        ) : (
-          <Slide phase={phase}>
-            <div
-              className={`${style.turnInfo} ${style.blue} ${style.link}`}
-              onClick={() => {
-                dispatch(gameActions.load({ code }));
-                dispatch(gameActions.startAction());
-              }}
-            >
-              戦闘開始
-            </div>
-            <div className={`${style.turnInfo} ${style.red}`}>PLAYER TURN</div>
-            <div className={`${style.turnInfo} ${style.red}`}>ENEMY TURN</div>
-            <div className={`${style.turnInfo} ${style.yellow}`}>WIN</div>
-            <div className={`${style.turnInfo} ${style.WildApple}`}>LOSE</div>
-          </Slide>
-        )}
+          <div
+            className={`${style.turnInfo} ${style.blue} ${style.link}`}
+            onClick={() => {
+              dispatch(gameActions.load({ code }));
+              dispatch(gameActions.startAction());
+            }}
+          >
+            戦闘開始
+          </div>
+          <div className={`${style.turnInfo} ${style.red}`}>PLAYER TURN</div>
+          <div className={`${style.turnInfo} ${style.red}`}>ENEMY TURN</div>
+          <div className={`${style.turnInfo} ${style.yellow}`}>WIN</div>
+          <div className={`${style.turnInfo} ${style.WildApple}`}>LOSE</div>
+        </Slide>
       </div>
       <div
         style={{
