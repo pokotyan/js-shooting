@@ -1,9 +1,11 @@
 import { Controller } from "../Controller";
+import { Dump } from "../Dump";
 
 const MAX_AP = 5;
 
 export class Bot {
   public controller: Controller;
+  public name: string;
   public hp: {
     max: number;
     current: number;
@@ -20,18 +22,21 @@ export class Bot {
 
   constructor({
     controller,
+    name,
     hp,
     mp,
     ap,
     def
   }: {
     controller: Controller;
+    name: string;
     hp: number;
     mp: number;
     ap: number;
     def: number;
   }) {
     this.controller = controller;
+    this.name = name;
     this.hp = {
       max: hp,
       current: hp
@@ -49,53 +54,73 @@ export class Bot {
 
   // @todo ダメージ計算用のクラス作る
   private calcDamage(bot: Bot, power: number) {
-    const damage = Math.max(
-      power - bot.def,
-      0
-    );
+    const damage = Math.max(power - bot.def, 0);
 
     bot.def = 0;
 
     return damage;
   }
 
-  public addAP() {
-    this.ap.current = Math.min(this.ap.current + 1, MAX_AP);
+  public addAP(ap: number) {
+    this.ap.current = Math.min(this.ap.current + ap, MAX_AP);
   }
 
-  public subtractAP() {
+  private subtractAP() {
     this.ap.current = Math.max(this.ap.current - 1, 0);
   }
 
-  public defenceUP(power: number) {
+  private defenceUP(power: number) {
     this.def += power;
   }
 
-  public doDamage(bot: Bot, power: number) {
+  private doDamage(bot: Bot, power: number) {
     const damage = this.calcDamage(bot, power);
 
     bot.hp.current = Math.max(bot.hp.current - damage, 0);
+
+    return damage;
   }
 
-  public attack(bot: Bot) {
-    this.controller.commands.atk.forEach(power => {
+  public attack(bot: Bot, snapShot: Dump) {
+    if (this.controller.commands.charge.length) {
+      return;
+    }
+
+    this.controller.commands.atk.forEach(atk => {
       if (this.ap.current) {
-        this.doDamage(bot, power);
+        const damage = this.doDamage(bot, atk.val);
+        snapShot.addAtk(damage);
       }
 
       this.subtractAP();
-    })
+    });
 
-    this.controller.resetATK();
+    this.controller.resetAtkCommand();
   }
 
-  public guard() {
-    this.controller.commands.def.forEach(power => {
+  public guard(snapShot: Dump) {
+    if (this.controller.commands.charge.length) {
+      return;
+    }
+
+    this.controller.commands.def.forEach(def => {
       if (this.ap.current) {
-        this.defenceUP(power);
+        this.defenceUP(def.val);
+        snapShot.addDef(def.val);
       }
 
       this.subtractAP();
-    })
+    });
+
+    this.controller.resetDefCommand();
+  }
+
+  public charge(snapShot: Dump) {
+    this.controller.commands.charge.forEach(c => {
+      this.addAP(2);
+      snapShot.addCharge(c.val);
+    });
+
+    this.controller.resetChargeCommand();
   }
 }

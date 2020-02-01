@@ -31,13 +31,19 @@ return script;
 #### attack()
 
 ```
-攻撃します。
+攻撃します。APを1消費します。
 ```
 
 #### guard()
 
 ```
-防御します。
+防御します。APを1消費します。
+```
+
+#### charge()
+
+```
+APを溜めます。
 ```
 
 ## パラメータ
@@ -62,15 +68,28 @@ return script;
 
 ## 行動の優先順位
 
-`attack()` > `guard()`
+`charge()` > `attack()` > `guard()`
 
 防御より、攻撃が優先されます。
 そのため、AP が 1 の状態だと下記コードは攻撃のみ行います。
+(AP が 2 以上の状態だと攻撃、防御の両方を行います)
 
 ```js
 const script = controller => {
   controller.guard();
   controller.attack();
+};
+return script;
+```
+
+チャージを行うとそれ以外の行動は行いません。
+そのため、下記コードはチャージのみ行います。
+
+```js
+const script = controller => {
+  controller.guard();
+  controller.attack();
+  controller.charge();
 };
 return script;
 ```

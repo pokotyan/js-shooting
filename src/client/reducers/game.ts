@@ -4,11 +4,17 @@ import * as gameActions from "../actions/game";
 import { Controller } from "../../core/Controller";
 import { genField, Field } from "../../core/Field";
 
-export type PHASE = "INITIAL" | "THINK" | "PLAYER_TURN" | "ENEMY_TURN" | "WIN" | "LOSE";
+export type PHASE =
+  | "INITIAL"
+  | "THINK"
+  | "PLAYER_TURN"
+  | "ENEMY_TURN"
+  | "WIN"
+  | "LOSE";
 
 export interface InitialState {
   code: string;
-  field: Field
+  field: Field;
   phase: PHASE;
   controller: Controller;
   isPause: boolean;
@@ -19,6 +25,7 @@ export const initialState = {
   code: `const script = controller => {
   controller.guard();
   controller.attack();
+  controller.charge();
 };
 return script;`,
   phase: "INITIAL" as PHASE,

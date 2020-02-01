@@ -3,8 +3,9 @@ import * as gameActions from "../actions/game";
 import * as uiActions from "../actions/ui";
 import { load as scriptLoad } from "../../core/ScriptLoader/ExposedScriptLoader";
 import { AppState } from "../reducers";
-import store from "../store";
+// import store from "../store";
 import { Field } from "../../core/Field";
+import { Dump } from "../../core/Dump";
 
 function* load() {
   while (true) {
@@ -22,19 +23,19 @@ function* start() {
     yield take(gameActions.START);
 
     yield put(gameActions.setPhase({ phase: "THINK" }));
-    let requestId: number = 0;
+    // let requestId: number = 0;
 
-    try {
-      const loop = () => {
-        store.dispatch(gameActions.tick());
+    // try {
+    //   const loop = () => {
+    //     store.dispatch(gameActions.tick());
 
-        requestId = window.requestAnimationFrame(loop);
-      };
+    //     requestId = window.requestAnimationFrame(loop);
+    //   };
 
-      window.requestAnimationFrame(loop);
-    } finally {
-      window.cancelAnimationFrame(requestId);
-    }
+    //   window.requestAnimationFrame(loop);
+    // } finally {
+    //   window.cancelAnimationFrame(requestId);
+    // }
   }
 }
 
@@ -54,35 +55,30 @@ function* show(text: string) {
   yield put(uiActions.closeTurnInfo({ message: text }));
 }
 
-function* showPlayerTurn() {
-  const { field }: { field: Field } = yield select((state: AppState) => state.game);
-
-  if (field.player.def) {
-    yield call(show, `ピカチューは ガードしている`);
+function* showAction(dump: Dump) {
+  if (!dump.action.length) {
+    yield call(show, `${dump.name}は 様子を見ている`);
   }
 
-  const damage = field.dump.enemy.hp - field.enemy.hp.current;
+  for (const action of dump.action) {
+    if (action.constructor.name === "Atk") {
+      yield call(show, `${action.val} ダメージ 与えた`);
+    }
 
-  if (damage) {
-    yield call(show, `${damage} ダメージ 与えた`);
+    if (action.constructor.name === "Def") {
+      yield call(show, `${dump.name}の 防御力 ${action.val}UP`);
+    }
+
+    if (action.constructor.name === "Charge") {
+      yield call(show, `${dump.name}は 力を溜めた`);
+    }
+
+    yield delay(1000);
   }
-}
-
-function* showEnemyTurn() {
-  const { field }: { field: Field } = yield select((state: AppState) => state.game);
-
-  if (field.enemy.def) {
-    yield call(show, `敵は ガードしている`);
-  }
-
-  yield call(show, `${field.dump.player.hp - field.player.hp.current} ダメージ 受けた`);
 }
 
 function* checkFinish(field: Field) {
-  const {
-    win,
-    lose
-  } = field.checkFinish();
+  const { win, lose } = field.checkFinish();
 
   if (win) {
     yield put(gameActions.setPhase({ phase: "WIN" }));
@@ -93,14 +89,14 @@ function* checkFinish(field: Field) {
     yield put(gameActions.setPhase({ phase: "LOSE" }));
     yield call(show, "LOSE");
     return true;
-  } 
+  }
 
   return false;
 }
 
 function* tick() {
   while (true) {
-    yield take(gameActions.TICK);
+    // yield take(gameActions.TICK);
 
     // ポーズ機能なくてもいい気がする
     // const { isPause } = yield select((state: AppState) => state.game);
@@ -122,11 +118,13 @@ function* tick() {
     // player turn
     try {
       script(field.player.controller);
-    } catch(err) {
+    } catch (err) {
       yield call(show, "SCRIPT ERROR");
 
       // @todo 通知コンポーネント作ってそれでエラー表示する
-      window.confirm(`コードに問題があります。API仕様を確認してください。err: ${err}`)
+      window.confirm(
+        `コードに問題があります。API仕様を確認してください。err: ${err}`
+      );
       continue;
     }
 
@@ -135,7 +133,7 @@ function* tick() {
 
     field.playerPhease();
 
-    yield call(showPlayerTurn);
+    yield call(showAction, field.snapShot.player);
 
     if (yield call(checkFinish, field)) {
       return;
@@ -150,7 +148,7 @@ function* tick() {
     yield call(show, "ENEMY TURN");
     field.enemyPhease();
 
-    yield call(showEnemyTurn);
+    yield call(showAction, field.snapShot.enemy);
 
     if (yield call(checkFinish, field)) {
       return;
