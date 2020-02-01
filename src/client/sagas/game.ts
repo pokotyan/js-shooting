@@ -67,7 +67,7 @@ function* showAction({
   }
 
   for (const action of dump.action) {
-    if (action.constructor.name === "Atk") {
+    if (action.type === "Atk") {
       yield put(uiActions.showDamageEffect({ isPlayerTurn }));
       yield call(
         show,
@@ -76,11 +76,11 @@ function* showAction({
       yield put(uiActions.hideDamageEffect());
     }
 
-    if (action.constructor.name === "Def") {
+    if (action.type === "Def") {
       yield call(show, `${dump.name}の 防御力 ${action.val}UP`);
     }
 
-    if (action.constructor.name === "Charge") {
+    if (action.type === "Charge") {
       yield call(show, `${dump.name}は 力を溜めた`);
     }
 
