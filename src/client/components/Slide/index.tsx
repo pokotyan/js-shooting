@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import { useTransition, animated } from "react-spring";
 import style from "./style.module.scss";
 import { PHASE } from "../../reducers/game";
@@ -10,7 +10,7 @@ const component = (children: any[]) => ({ style }: { style: any }) => (
 const getIndex = (phase: PHASE) => {
   let index = 0;
 
-  if (phase === "THINK") {
+  if (phase === "INITIAL" || phase === "THINK") {
     index = 0;
   } else if (phase === "PLAYER_TURN") {
     index = 1;
@@ -26,12 +26,6 @@ const getIndex = (phase: PHASE) => {
 };
 
 export default ({ phase, children }: { phase: PHASE; children: any[] }) => {
-  const [, setPhase] = useState(phase);
-
-  useCallback(() => {
-    setPhase(phase);
-  }, [phase]);
-
   const index = getIndex(phase);
 
   const transitions = useTransition(index, p => p, {
