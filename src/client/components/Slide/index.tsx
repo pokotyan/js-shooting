@@ -39,7 +39,6 @@ export default ({ phase, children }: { phase: PHASE; children: any[] }) => {
   return (
     <div className={style.container}>
       {transitions.map(({ item, props, key }) => {
-        console.log(item);
         const Page = component(children[item]);
 
         return <Page key={key} style={props} />;
