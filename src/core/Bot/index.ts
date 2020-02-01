@@ -82,10 +82,6 @@ export class Bot {
   }
 
   public attack(bot: Bot, snapShot: Dump) {
-    if (this.controller.commands.charge.length) {
-      return;
-    }
-
     this.controller.commands.atk.forEach(atk => {
       if (this.ap.current) {
         const damage = this.doDamage(bot, atk.val);
@@ -94,15 +90,9 @@ export class Bot {
 
       this.subtractAP();
     });
-
-    this.controller.resetAtkCommand();
   }
 
   public guard(snapShot: Dump) {
-    if (this.controller.commands.charge.length) {
-      return;
-    }
-
     this.controller.commands.def.forEach(def => {
       if (this.ap.current) {
         this.defenceUP(def.val);
@@ -111,16 +101,12 @@ export class Bot {
 
       this.subtractAP();
     });
-
-    this.controller.resetDefCommand();
   }
 
   public charge(snapShot: Dump) {
     this.controller.commands.charge.forEach(c => {
-      this.addAP(2);
+      this.addAP(c.val);
       snapShot.addCharge(c.val);
     });
-
-    this.controller.resetChargeCommand();
   }
 }

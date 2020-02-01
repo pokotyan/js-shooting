@@ -1,5 +1,5 @@
 import { Bot } from "../Bot";
-import { BotCommand } from "../Command";
+// import { BotCommand } from "../Command";
 import { Controller } from "../Controller";
 import { Dump } from "../Dump";
 
@@ -31,16 +31,20 @@ export class Field {
 
   public playerPhease() {
     this.prePhease();
-    this.player.attack(this.enemy, this.snapShot.player);
-    this.player.guard(this.snapShot.player);
-    this.player.charge(this.snapShot.player);
+    this.player.controller.execute(() => {
+      this.player.charge(this.snapShot.player);
+      this.player.attack(this.enemy, this.snapShot.player);
+      this.player.guard(this.snapShot.player);
+    });
   }
 
   public enemyPhease() {
     this.prePhease();
-    this.enemy.attack(this.player, this.snapShot.enemy);
-    this.enemy.guard(this.snapShot.enemy);
-    this.enemy.charge(this.snapShot.enemy);
+    this.enemy.controller.execute(() => {
+      this.enemy.charge(this.snapShot.enemy);
+      this.enemy.attack(this.player, this.snapShot.enemy);
+      this.enemy.guard(this.snapShot.enemy);
+    });
   }
 
   public endPhease() {
@@ -73,7 +77,7 @@ export class Field {
 export const genField = () => {
   const field = new Field({
     player: new Bot({
-      controller: new Controller({ command: new BotCommand() }),
+      controller: new Controller(),
       name: "ピカチュー",
       hp: 100,
       mp: 80,
@@ -81,7 +85,7 @@ export const genField = () => {
       def: 0
     }),
     enemy: new Bot({
-      controller: new Controller({ command: new BotCommand() }),
+      controller: new Controller(),
       name: "スヌーピー",
       hp: 200,
       mp: 200,

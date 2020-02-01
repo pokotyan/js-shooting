@@ -1,16 +1,13 @@
-import { BotCommand } from "../Command";
 import { Atk, Def, Charge } from "../Action";
 
 export class Controller {
-  public command: BotCommand;
   public commands: {
     atk: Atk[];
     def: Def[];
     charge: Charge[];
   };
 
-  constructor({ command }: { command: BotCommand }) {
-    this.command = command;
+  constructor() {
     this.commands = {
       atk: [],
       def: [],
@@ -34,15 +31,29 @@ export class Controller {
     this.commands.charge = [];
   }
 
+  public execute(cb: () => void) {
+    // チャージを実行する場合、他の行動は取らせない
+    if (this.commands.charge.length) {
+      this.resetAtkCommand();
+      this.resetDefCommand();
+    }
+
+    cb();
+
+    this.resetAtkCommand();
+    this.resetDefCommand();
+    this.resetChargeCommand();
+  }
+
   public attack() {
-    this.commands.atk.push(this.command.attack());
+    this.commands.atk.push(new Atk({ value: 50 }));
   }
 
   public guard() {
-    this.commands.def.push(this.command.guard());
+    this.commands.def.push(new Def({ value: 30 }));
   }
 
   public charge() {
-    this.commands.charge.push(this.command.charge());
+    this.commands.charge.push(new Charge({ value: 2 }));
   }
 }

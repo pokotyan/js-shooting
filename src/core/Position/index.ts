@@ -1,4 +1,4 @@
-import { BotCommand } from "../Command";
+// import { BotCommand } from "../Command";
 
 export class Position {
   public x: number = 0;
