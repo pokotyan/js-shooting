@@ -21,11 +21,19 @@
 }
 
 .hpColor {
+  background: linear-gradient(135deg, #b4eff3 0%, #12fa86 100%);
+}
+
+.middleHpColor {
   background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
 }
 
+.lowHpColor {
+  background: linear-gradient(135deg, #f7bfcd 0%, #fa0324 100%);
+}
+
 .mpColor {
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  background: linear-gradient(135deg, #79faf3 0%, #103bca 100%);
 }
 
 .apColor {

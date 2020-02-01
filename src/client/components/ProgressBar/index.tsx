@@ -39,12 +39,24 @@ export default ({
   type: "HP" | "MP" | "AP";
 }) => {
   const width = (current / max) * 100;
-  const colorStyle =
-    type === "HP"
-      ? style.hpColor
-      : type === "MP"
-      ? style.mpColor
-      : style.apColor;
+  let colorStyle = "";
+
+  if (type === "HP") {
+    if (25 >= width) {
+      colorStyle = style.lowHpColor;
+    } else if (50 >= width) {
+      colorStyle = style.middleHpColor;
+    } else {
+      colorStyle = style.hpColor;
+    }
+  }
+  if (type === "MP") {
+    colorStyle = style.mpColor;
+  }
+  if (type === "AP") {
+    colorStyle = style.apColor;
+  }
+
   const { width: animatedWidth } = useSpring({ from: { width }, width });
 
   return (
