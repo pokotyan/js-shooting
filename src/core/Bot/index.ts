@@ -91,7 +91,7 @@ export class Bot {
     this.controller.commands.atk.forEach(atk => {
       if (this.ap.current) {
         const damage = this.doAttack(bot, atk.val);
-        this.dump.addAtk(damage);
+        this.dump.attack(damage);
       }
 
       this.subtractAP();
@@ -102,7 +102,7 @@ export class Bot {
     this.controller.commands.def.forEach(def => {
       if (this.ap.current) {
         this.doGuard(def.val);
-        this.dump.addDef(def.val);
+        this.dump.guard(def.val);
       }
 
       this.subtractAP();
@@ -112,7 +112,7 @@ export class Bot {
   public charge() {
     this.controller.commands.charge.forEach(c => {
       this.addAP(c.val);
-      this.dump.addCharge(c.val);
+      this.dump.charge(c.val);
     });
   }
 }

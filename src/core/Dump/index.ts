@@ -24,15 +24,15 @@ export class Dump {
     this.action = [];
   }
 
-  addAtk(damage: number) {
+  attack(damage: number) {
     this.action.push(new Atk({ value: damage }));
   }
 
-  addDef(def: number) {
+  guard(def: number) {
     this.action.push(new Def({ value: def }));
   }
 
-  addCharge(ap: number) {
+  charge(ap: number) {
     this.action.push(new Charge({ value: ap }));
   }
 }
