@@ -19,6 +19,7 @@ export class Bot {
     current: number;
   };
   public def: number;
+  public dump: Dump;
 
   constructor({
     controller,
@@ -50,6 +51,11 @@ export class Bot {
       current: ap
     };
     this.def = def;
+    this.dump = new Dump({
+      name: this.name,
+      hp: this.hp.current,
+      action: []
+    })
   }
 
   // @todo ダメージ計算用のクラス作る
@@ -69,11 +75,11 @@ export class Bot {
     this.ap.current = Math.max(this.ap.current - 1, 0);
   }
 
-  private defenceUP(power: number) {
+  private doGuard(power: number) {
     this.def += power;
   }
 
-  private doDamage(bot: Bot, power: number) {
+  private doAttack(bot: Bot, power: number) {
     const damage = this.calcDamage(bot, power);
 
     bot.hp.current = Math.max(bot.hp.current - damage, 0);
@@ -81,32 +87,32 @@ export class Bot {
     return damage;
   }
 
-  public attack(bot: Bot, snapShot: Dump) {
+  public attack(bot: Bot) {
     this.controller.commands.atk.forEach(atk => {
       if (this.ap.current) {
-        const damage = this.doDamage(bot, atk.val);
-        snapShot.addAtk(damage);
+        const damage = this.doAttack(bot, atk.val);
+        this.dump.addAtk(damage);
       }
 
       this.subtractAP();
     });
   }
 
-  public guard(snapShot: Dump) {
+  public guard() {
     this.controller.commands.def.forEach(def => {
       if (this.ap.current) {
-        this.defenceUP(def.val);
-        snapShot.addDef(def.val);
+        this.doGuard(def.val);
+        this.dump.addDef(def.val);
       }
 
       this.subtractAP();
     });
   }
 
-  public charge(snapShot: Dump) {
+  public charge() {
     this.controller.commands.charge.forEach(c => {
       this.addAP(c.val);
-      snapShot.addCharge(c.val);
+      this.dump.addCharge(c.val);
     });
   }
 }

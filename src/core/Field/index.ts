@@ -1,49 +1,39 @@
 import { Bot } from "../Bot";
 // import { BotCommand } from "../Command";
 import { Controller } from "../Controller";
-import { Dump } from "../Dump";
+import { ControllerManager } from "../ControllerManager";
 
 export class Field {
+  private controllerManager: ControllerManager;
   public player: Bot;
   public enemy: Bot;
-  public snapShot: {
-    player: Dump;
-    enemy: Dump;
-  };
 
   constructor({ player, enemy }: { player: Bot; enemy: Bot }) {
+    this.controllerManager = new ControllerManager();
     this.player = player;
     this.enemy = enemy;
-    this.snapShot = {
-      player: new Dump({
-        name: player.name,
-        hp: player.hp.current,
-        action: []
-      }),
-      enemy: new Dump({ name: enemy.name, hp: enemy.hp.current, action: [] })
-    };
   }
 
   public prePhease() {
-    this.snapShot.player.reset(this.player.hp.current);
-    this.snapShot.enemy.reset(this.enemy.hp.current);
+    this.player.dump.reset(this.player.hp.current);
+    this.enemy.dump.reset(this.enemy.hp.current);
   }
 
   public playerPhease() {
     this.prePhease();
-    this.player.controller.execute(() => {
-      this.player.charge(this.snapShot.player);
-      this.player.attack(this.enemy, this.snapShot.player);
-      this.player.guard(this.snapShot.player);
+    this.controllerManager.execute(this.player.controller, () => {
+      this.player.charge();
+      this.player.attack(this.enemy);
+      this.player.guard();
     });
   }
 
   public enemyPhease() {
     this.prePhease();
-    this.enemy.controller.execute(() => {
-      this.enemy.charge(this.snapShot.enemy);
-      this.enemy.attack(this.player, this.snapShot.enemy);
-      this.enemy.guard(this.snapShot.enemy);
+    this.controllerManager.execute(this.enemy.controller, () => {
+      this.enemy.charge();
+      this.enemy.attack(this.player);
+      this.enemy.guard();
     });
   }
 

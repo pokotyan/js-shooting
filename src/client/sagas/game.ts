@@ -142,7 +142,7 @@ function* tick() {
 
     field.playerPhease();
 
-    yield call(showAction, { dump: field.snapShot.player, isPlayerTurn: true });
+    yield call(showAction, { dump: field.player.dump, isPlayerTurn: true });
 
     if (yield call(checkFinish, field)) {
       return;
@@ -158,7 +158,7 @@ function* tick() {
 
     field.enemyPhease();
 
-    yield call(showAction, { dump: field.snapShot.enemy, isPlayerTurn: false });
+    yield call(showAction, { dump: field.enemy.dump, isPlayerTurn: false });
 
     if (yield call(checkFinish, field)) {
       return;
